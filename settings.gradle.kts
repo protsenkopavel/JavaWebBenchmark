@@ -2,5 +2,6 @@ rootProject.name = "web-benchmark"
 
 include(
     "common",
-    "mock-server"
+    "mock-server",
+    "sync-module"
 )
