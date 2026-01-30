@@ -4,5 +4,6 @@ include(
     "common",
     "mock-server",
     "sync-module",
-    "webflux-module"
+    "webflux-module",
+    "loom-module"
 )
