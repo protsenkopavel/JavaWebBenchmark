@@ -3,5 +3,6 @@ rootProject.name = "web-benchmark"
 include(
     "common",
     "mock-server",
-    "sync-module"
+    "sync-module",
+    "webflux-module"
 )

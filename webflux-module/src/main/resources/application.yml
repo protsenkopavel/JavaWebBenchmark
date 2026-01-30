@@ -1,0 +1,24 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: webflux-module
+  r2dbc:
+    url: r2dbc:h2:mem:///webfluxdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
+external:
+  service:
+    base-url: http://localhost:8090
+
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG
+    io.r2dbc: INFO
