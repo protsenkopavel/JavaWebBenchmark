@@ -1,5 +1,6 @@
 rootProject.name = "web-benchmark"
 
 include(
-    "common"
+    "common",
+    "mock-server"
 )

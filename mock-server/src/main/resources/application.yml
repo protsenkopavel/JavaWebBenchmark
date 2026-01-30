@@ -1,0 +1,12 @@
+server:
+  port: 8090
+
+mock:
+  latency:
+    min: 50
+    max: 150
+
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG
