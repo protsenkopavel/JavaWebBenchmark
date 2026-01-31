@@ -48,41 +48,7 @@ public class ReactiveProductService {
                 .map(mapper::toDto);
     }
 
-    /**
-     * Main benchmark method: parallel HTTP calls using Mono.zip()
-     * All 3 calls execute concurrently without blocking any thread!
-     */
     public Mono<ProductAggregation> getProductAggregation(Long productId) {
-        log.debug("Aggregating data for product {} using Mono.zip()", productId);
-
-        // All 3 calls start simultaneously and complete in parallel
-        return Mono.zip(
-                externalClient.getInventory(productId),
-                externalClient.getPricing(productId),
-                externalClient.getReviews(productId)
-        ).map(tuple -> {
-            var inventory = tuple.getT1();
-            var pricing = tuple.getT2();
-            var reviews = tuple.getT3();
-
-            return ProductAggregation.builder()
-                    .productId(productId)
-                    .stockCount(inventory.getStockCount())
-                    .warehouseLocation(inventory.getWarehouseLocation())
-                    .currentPrice(pricing.getCurrentPrice())
-                    .discountPercent(pricing.getDiscountPercent())
-                    .averageRating(reviews.getAverageRating())
-                    .reviewCount(reviews.getReviewCount())
-                    .build();
-        });
-    }
-
-    public Flux<ProductAggregation> getProductAggregations(List<Long> productIds) {
-        return Flux.fromIterable(productIds)
-                .flatMap(this::getProductAggregation, 100);
-    }
-
-    public Mono<ProductAggregation> getProductAggregationWithFlatMap(Long productId) {
         log.debug("Aggregating data for product {} using flatMap chain", productId);
 
         return externalClient.getInventory(productId)
@@ -102,5 +68,10 @@ public class ReactiveProductService {
                         .averageRating(tuple.getT3().getAverageRating())
                         .reviewCount(tuple.getT3().getReviewCount())
                         .build());
+    }
+
+    public Flux<ProductAggregation> getProductAggregations(List<Long> productIds) {
+        return Flux.fromIterable(productIds)
+                .flatMap(this::getProductAggregation, 100);
     }
 }
